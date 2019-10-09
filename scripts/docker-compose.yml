@@ -1,0 +1,47 @@
+version: "3.5"
+networks:
+  localdev:
+    name: localdev
+
+services:
+  main-api:
+    build: ../src/
+    volumes:
+      - "../src/:/app"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      # - SqlConnectionString=
+    restart: always
+    ports:
+      - "5000:5000"
+    depends_on:
+      - pg-server
+    networks:
+      - localdev
+
+  pg-server:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: database
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+    container_name: pg-db-server
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./postgres-data:/var/lib/posgresql/data
+    networks:
+      - localdev
+
+  pg-pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pg-db-admin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "admin@admin.com"
+      PGADMIN_DEFAULT_PASSWORD: "admin"
+    ports:
+      - "16543:80"
+    depends_on:
+      - pg-server
+    networks:
+      - localdev
