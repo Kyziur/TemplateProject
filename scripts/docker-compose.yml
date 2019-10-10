@@ -5,9 +5,13 @@ networks:
 
 services:
   main-api:
-    build: ../src/
+    build:
+      context: ../src/
+      dockerfile: Dockerfile
     volumes:
-      - "../src/:/app"
+      - "../src/ProjectTemplate.Api:/app/ProjectTemplate.Api"
+      - "../src/ProjectTemplate.Core:/app/ProjectTemplate.Core"
+      - "../src/ProjectTemplate.Infrastructure:/app/ProjectTemplate.Infrastructure"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       # - SqlConnectionString=
@@ -16,6 +20,18 @@ services:
       - "5000:5000"
     depends_on:
       - pg-server
+    networks:
+      - localdev
+
+  frontend:
+    build:
+      context: ../src/projecttemplate.frontend/
+      dockerfile: Dockerfile
+    volumes:
+      - "../src/projecttemplate.frontend:/app/projecttemplate.frontend"
+      - "../src/projecttemplate.frontend/node_modules"
+    ports:
+      - "8080:8080"
     networks:
       - localdev
 

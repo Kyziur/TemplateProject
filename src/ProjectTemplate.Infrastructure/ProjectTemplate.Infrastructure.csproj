@@ -3,5 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
   </PropertyGroup>
-
+  <ItemGroup>
+    <ProjectReference Include="../ProjectTemplate.Core/ProjectTemplate.Core.csproj" />
+  </ItemGroup>
 </Project>
