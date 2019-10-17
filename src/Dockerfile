@@ -9,7 +9,7 @@ RUN rm -rf /var/lib/apt/lists/*
 RUN curl -sSL https://aka.ms/getvsdbgsh | bash /dev/stdin -v latest -l /vsdbg
 ENV DOTNET_USE_POLLING_FILE_WATCHER 1
 
-VOLUME /app
+# VOLUME /app
 WORKDIR /app/ProjectTemplate.Api/
 
 EXPOSE 5000/tcp 
