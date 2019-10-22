@@ -30,9 +30,11 @@ services:
     volumes:
       - "../src/projecttemplate.frontend:/app/projecttemplate.frontend"
     ports:
-      - "8080:8080"
+      - "3000:3000"
     networks:
       - localdev
+    environment: 
+      - CHOKIDAR_USEPOLLING=true
 
   pg-server:
     image: postgres:latest

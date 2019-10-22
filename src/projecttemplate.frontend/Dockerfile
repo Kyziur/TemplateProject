@@ -8,13 +8,13 @@ WORKDIR /app/projecttemplate.frontend/
 # add `/app/node_modules/.bin` to $PATH
 ENV PATH /app/node_modules/.bin:$PATH
 # copy both 'package.json' and 'package-lock.json' (if available)
-COPY package*.json ./
+COPY package*.json ./app/projecttemplate.frontend/
 
 # install project dependencies
-RUN npm install
-RUN npm install @vue/cli@3.7.0 -g
+RUN npm install --silent
+RUN npm install react-scripts@3.0.1 -g --silent
 
 VOLUME /app/projecttemplate.frontend
 
-EXPOSE 8080
-CMD ["npm", "run", "serve"]
+EXPOSE 3000
+CMD ["npm", "start"]
