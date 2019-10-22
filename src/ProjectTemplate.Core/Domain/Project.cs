@@ -5,23 +5,26 @@ namespace ProjectTemplate.Core.Domain
 {
     public class Project
     {
-        public Project(Guid id, string name, User owner, ISet<Task> tasks)
+        protected Project()
+        {
+        }
+
+        public Project(Guid id, string name, User owner)
         {
             Id = id;
             SetName(name);
             SetOwner(owner);
-            Tasks = tasks;
             CreatedAt = DateTime.UtcNow;
         }
 
         public Guid Id { get; protected set; }
         public string Name { get; protected set; }
         public User Owner { get; protected set; }
-        private ISet<Task> _tasks = new HashSet<Task>();
-        public ISet<Task> Tasks
+        private ISet<Issue> _issues = new HashSet<Issue>();
+        public ISet<Issue> Issues
         {
-            get { return _tasks; }
-            protected set { _tasks = new HashSet<Task>(value); }
+            get => _issues;
+            protected set => _issues = new HashSet<Issue>(value);
         }
 
         public DateTime CreatedAt { get; protected set; }
@@ -39,18 +42,18 @@ namespace ProjectTemplate.Core.Domain
         public void SetOwner(User owner)
         {
             if (owner == null)
-                throw new ArgumentNullException(nameof(owner), "Project owner cannot be null.");
+                throw new ArgumentNullException(nameof(owner), "Project owner not found.");
 
             Owner = owner;
             UpdatedAt = DateTime.UtcNow;
         }
 
-        public void AddTask(Task task)
+        public void AddIssue(Issue issue)
         {
-            if (task == null)
-                throw new ArgumentNullException(nameof(task), "Task cannot be null.");
+            if (issue == null)
+                throw new ArgumentNullException(nameof(issue), "Issue not found.");
 
-            _tasks.Add(task);
+            _issues.Add(issue);
         }
     }
 }

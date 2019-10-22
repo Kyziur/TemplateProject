@@ -9,7 +9,7 @@ namespace ProjectTemplate.Api.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class WeatherForecastController : ControllerBase
+    public class WeatherForecastController : Microsoft.AspNetCore.Mvc.ControllerBase
     {
         private static readonly string[] Summaries = new[]
         {

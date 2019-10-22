@@ -4,13 +4,16 @@ namespace ProjectTemplate.Core.Domain
 {
     public class Comment
     {
+        protected Comment()
+        {
+        }
+
         public Comment(Guid id, User author, string text)
         {
             Id = id;
             SetAuthor(author);
             SetText(text);
             CreatedAt = DateTime.UtcNow;
-            UpdatedAt = DateTime.UtcNow;
         }
 
         public Guid Id { get; protected set; }
@@ -25,6 +28,7 @@ namespace ProjectTemplate.Core.Domain
                 throw new ArgumentNullException(nameof(author), "Author cannot be null.");
 
             Author = author;
+            UpdatedAt = DateTime.UtcNow;
         }
 
         public void SetText(string text)

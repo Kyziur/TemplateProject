@@ -4,9 +4,12 @@ using System.Linq;
 
 namespace ProjectTemplate.Core.Domain
 {
-    public class Task
+    public class Issue
     {
-        public Task(Guid id, string name, string description)
+        protected Issue()
+        {
+        }
+        public Issue(Guid id, string name, string description)
         {
             Id = id;
             SetName(name);
@@ -18,12 +21,17 @@ namespace ProjectTemplate.Core.Domain
         public string Name { get; protected set; }
         public string Description { get; protected set; }
         //TODO: Implement adding comments
-        public IEnumerable<Comment> Comments { get; protected set; }
-        private ISet<Task> _linkedTasks = new HashSet<Task>();
-        public ISet<Task> LinkedTasks
+        private ISet<Comment> _comments = new HashSet<Comment>();
+        public ISet<Comment> Comments
         {
-            get { return _linkedTasks; }
-            protected set { _linkedTasks = new HashSet<Task>(value); }
+            get => _comments;
+            protected set => _comments = new HashSet<Comment>(value);
+        }
+        private ISet<Issue> _linkedIssues = new HashSet<Issue>();
+        public ISet<Issue> LinkedIssues
+        {
+            get => _linkedIssues;
+            protected set => _linkedIssues = new HashSet<Issue>(value);
         }
         public DateTime DueDate { get; protected set; }
         public DateTime CreatedAt { get; protected set; }
@@ -48,19 +56,18 @@ namespace ProjectTemplate.Core.Domain
 
         public void SetDueDate(DateTime dueDate)
         {
-            var today = DateTime.UtcNow;
-            var difference = today.Subtract(dueDate);
-            if (difference.Days > 0)
+            var difference = dueDate.Subtract(DateTime.UtcNow).Days;
+            if (difference < 0)
                 throw new ArgumentException(nameof(dueDate), "Due date is invalid. Due date cannot be in past.");
 
             DueDate = dueDate;
             UpdatedAt = DateTime.UtcNow;
         }
 
-        public void AssignTaskTo(User user)
+        public void AssignIssueTo(User user)
         {
             if (user == null)
-                throw new ArgumentNullException(nameof(user), "User cannot be null.");
+                throw new ArgumentNullException(nameof(user), "User not found.");
 
             AssignedTo = user;
             UpdatedAt = DateTime.UtcNow;
@@ -69,28 +76,28 @@ namespace ProjectTemplate.Core.Domain
         public void SetReportedBy(User reporter)
         {
             if (reporter == null)
-                throw new ArgumentNullException(nameof(reporter), "Reporter cannot be null.");
+                throw new ArgumentNullException(nameof(reporter), "Reporter not found.");
 
             ReportedBy = reporter;
             UpdatedAt = DateTime.UtcNow;
         }
 
-        public void AddLinkToTask(Task task)
+        public void AddLinkToIssue(Issue issue)
         {
-            if (task == null)
-                throw new ArgumentNullException(nameof(task), "Task cannot be null.");
+            if (issue == null)
+                throw new ArgumentNullException(nameof(issue), "Issue not found.");
 
-            _linkedTasks.Add(task);
+            _linkedIssues.Add(issue);
             UpdatedAt = DateTime.UtcNow;
         }
 
-        public void RemoveLinkedTask(Guid taskId)
+        public void RemoveLinkedIssue(Guid issueId)
         {
-            var task = _linkedTasks.SingleOrDefault(x => x.Id == taskId);
-            if (task == null)
-                throw new Exception("Task was not found.");
+            var issue = _linkedIssues.SingleOrDefault(x => x.Id == issueId);
+            if (issue == null)
+                throw new Exception("Issue was not found.");
 
-            _linkedTasks.Remove(task);
+            _linkedIssues.Remove(issue);
             UpdatedAt = DateTime.UtcNow;
         }
 
