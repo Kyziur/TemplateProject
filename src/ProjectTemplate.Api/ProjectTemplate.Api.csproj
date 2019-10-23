@@ -8,4 +8,8 @@
     <ProjectReference Include="../ProjectTemplate.Infrastructure/ProjectTemplate.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.0.0" />
+  </ItemGroup>
+
 </Project>

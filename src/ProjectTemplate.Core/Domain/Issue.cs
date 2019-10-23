@@ -9,18 +9,19 @@ namespace ProjectTemplate.Core.Domain
         protected Issue()
         {
         }
+
         public Issue(Guid id, string name, string description)
         {
             Id = id;
             SetName(name);
             SetDescription(description);
+            SetStatus(Status.NotStarted);
             CreatedAt = DateTime.UtcNow;
         }
 
         public Guid Id { get; protected set; }
         public string Name { get; protected set; }
         public string Description { get; protected set; }
-        //TODO: Implement adding comments
         private ISet<Comment> _comments = new HashSet<Comment>();
         public ISet<Comment> Comments
         {
@@ -38,6 +39,7 @@ namespace ProjectTemplate.Core.Domain
         public DateTime UpdatedAt { get; protected set; }
         public User AssignedTo { get; protected set; }
         public User ReportedBy { get; protected set; }
+        public Status Status { get; protected set; }
 
         public void SetName(string name)
         {
@@ -58,7 +60,7 @@ namespace ProjectTemplate.Core.Domain
         {
             var difference = dueDate.Subtract(DateTime.UtcNow).Days;
             if (difference < 0)
-                throw new ArgumentException(nameof(dueDate), "Due date is invalid. Due date cannot be in past.");
+                throw new ArgumentException("Due date is invalid. Due date cannot be in past.", nameof(dueDate));
 
             DueDate = dueDate;
             UpdatedAt = DateTime.UtcNow;
@@ -98,6 +100,12 @@ namespace ProjectTemplate.Core.Domain
                 throw new Exception("Issue was not found.");
 
             _linkedIssues.Remove(issue);
+            UpdatedAt = DateTime.UtcNow;
+        }
+
+        public void SetStatus(Status status)
+        {
+            Status = status;
             UpdatedAt = DateTime.UtcNow;
         }
 
