@@ -1,9 +1,14 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json.Serialization;
+using ProjectTemplate.Core.Repositories;
+using ProjectTemplate.Infrastructure.Repositories;
+using ProjectTemplate.Infrastructure;
+using ProjectTemplate.Infrastructure.Services;
 
 namespace ProjectTemplate.Api
 {
@@ -19,10 +24,15 @@ namespace ProjectTemplate.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddEntityFrameworkNpgsql()
+                .AddDbContext<ProjectTemplateContext>(options => options.UseNpgsql(Configuration.GetConnectionString("")));
             services.AddControllers().AddNewtonsoftJson(options =>
             {
                 options.SerializerSettings.ContractResolver = new DefaultContractResolver();
             });
+
+            services.AddScoped<IIssueRepository, IssueRepository>();
+            services.AddScoped<IIsueService, IssueService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
