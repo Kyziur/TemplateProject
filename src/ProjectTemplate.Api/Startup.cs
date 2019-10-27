@@ -31,8 +31,6 @@ namespace ProjectTemplate.Api
                 options.SerializerSettings.ContractResolver = new DefaultContractResolver();
             });
 
-            services.AddScoped<IIssueRepository, IssueRepository>();
-            services.AddScoped<IIsueService, IssueService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

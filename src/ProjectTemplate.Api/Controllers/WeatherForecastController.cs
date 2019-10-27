@@ -9,11 +9,11 @@ namespace ProjectTemplate.Api.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class WeatherForecastController : Microsoft.AspNetCore.Mvc.ControllerBase
+    public class WeatherForecastController : ApiControllerBase
     {
         private static readonly string[] Summaries = new[]
         {
-            "Freezing11", "Bracing22", "Chilly33", "Cool4", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
+            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         };
 
         private readonly ILogger<WeatherForecastController> _logger;
